@@ -1,0 +1,20 @@
+-- Live pattern — edit while sequencer runs; reload applies on the next cycle boundary.
+-- Add samples/kick.wav and samples/snare.wav (or change paths below).
+
+bpm 60
+master 0.2
+swing 0
+humanize_ms 0
+reload_quantum_cycles 1
+
+mute all 
+-- unsilence zz
+
+d3 $ s "hh:9*4" 
+
+
+-- d1 $ slow 2 $ s "bd:1 sn:1"
+-- d2 $ slow 2 $ s "<bd:1 sn:1>"
+-- d7 $ s "hh:11*6 bd*3" # gain "0.1*4 0.2 0.3 0.7 1" # pan "-1 1"
+
+

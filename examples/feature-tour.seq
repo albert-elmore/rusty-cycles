@@ -1,0 +1,32 @@
+-- Quick feature tour — uncomment ONE block to hear it in isolation.
+--
+-- Full coverage (aliases + stacks + gains + orbits + multiline):
+--   examples/showcase.seq   (parsed by tests; see dsl::examples_showcase_seq_parses_and_schedules)
+--
+-- Run:
+--   cargo run --release -- examples/feature-tour.seq --sample-root samples --verbose
+--
+-- Banks: samples/bd/*.wav, samples/hh/*.wav, samples/sn/*.wav
+
+bpm 96
+
+master 0.3
+
+alias side sn:1
+
+-- --- pick one ---
+-- d2 $ s "bd sn"
+-- d2 $ s "[bd sn] ~ bd"
+-- d2 $ s "<bd sn>"
+-- d2 $ s "stack [ bd sn, sn sn ]"
+-- d2 $ gain 0.7 s "bd bd"
+--
+-- New live controls:
+-- d1 $ s "bd sn hh sn" # gain "0.6" # pan "-0.2"
+-- d2 $ s "hh hh sn sn" # gain "1 0.5" # pan "-1 1"
+-- mute d1
+-- (to unmute, remove/comment the mute line and save)
+-- solo d2
+-- (to clear solos, remove/comment all solo lines and save)
+
+-- d2 $ s "bd sn"

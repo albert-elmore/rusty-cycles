@@ -1,0 +1,4 @@
+-- Included by `test.seq` for the **include** demo (keep this file next to `test.seq`).
+-- Do not add `include` lines here unless you are testing nested includes.
+
+d1 $ s "bd sn"

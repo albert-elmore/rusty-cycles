@@ -1,0 +1,100 @@
+-- =============================================================================
+-- MANUAL TEST COOKBOOK — DSL features (include, let, nested `$`, slow/fast)
+-- =============================================================================
+--
+-- HOW TO RUN
+--   From the repo root, with WAVs available (e.g. under `samples/` or beside this file):
+--
+--     cargo run --release -- test.seq
+--
+--   If banks live only under `samples/`:
+--
+--     cargo run --release -- test.seq --sample-root samples
+--
+-- HOW TO USE THIS FILE
+--   • Only one **pattern** block should be active at a time (uncomment one section).
+--   • Keep `bpm` / `master` as you like; they apply to whatever pattern is active.
+--   • Tokens like `bd`, `sn`, `hh` expect bank folders with `.wav` files (see README).
+--
+-- FILES
+--   • `test_include_part.seq` must sit in the **same directory** as `test.seq` for
+--     the include test (the runner resolves paths relative to this file’s folder).
+--
+-- WHAT TO LISTEN FOR (quick)
+--   • **let** — same rhythm as if you had typed the expanded mini-notation inline.
+--   • **include** — should sound like the fragment file (bd / sn two-step).
+--   • **nested `$`** — e.g. `rev $ pal $` changes order/mirroring vs plain `s`.
+--   • **slow N $** — one step of the inner pattern per cycle (N cycles per full bar).
+--   • **fast N $** — N inner cycles squeezed into one wall clock cycle.
+--
+-- =============================================================================
+
+
+-- ---------------------------------------------------------------------------
+-- A) `let` — bind a mini-notation fragment; whole names substituted in `s "…"`
+--    and in `# … "…"` lane strings (longer names win if they overlap).
+--
+--let kit "bd sn hh"
+--d1 $ s "kit"
+--
+-- Lane expansion (uncomment together):
+--let hits "bd sn ~"
+--let gains "0.5 1 0.2"
+--d1 $ s "hits" # gain "gains"
+
+-- ---------------------------------------------------------------------------
+-- B) `include` — paste another `.seq` before parse (paths relative to this file).
+--    Uncomment **only** this block (uses `test_include_part.seq` next to this file).
+--
+--include "test_include_part.seq"
+
+
+-- ---------------------------------------------------------------------------
+-- C) Nested `$` chains — right-associative: outer combinator wraps inner result.
+--    Compare with section (3) plain `rev` alone if you still have those samples.
+--
+--d1 $ rev $ pal $ s "bd sn hh"
+--mute d1
+
+-- ---------------------------------------------------------------------------
+-- D) `slow N $` — inner pattern stretched across N wall cycles (regression: needs
+--    exactly one `$` after N, e.g. `slow 2 $ s "…"`).
+--
+--d1 $ slow 2 $ s "bd sn"
+
+-- ---------------------------------------------------------------------------
+-- E) `fast N $` — N inner cycles in one wall cycle.
+--
+--d1 $ fast 2 $ s "bd sn"
+
+-- ---------------------------------------------------------------------------
+-- F) Single combinators (sanity)
+--
+--d1 $ rev $ s "bd sn hh"
+--d2 $ rot 1 $ s "[bd sn hh]"
+--d3 $ pal $ s "bd sn hh:1 hh:2"
+--d4 $ every 2 pal $ s "bd sn hh"
+--d5 $ slow 2 $ s "hh:9 ~ ~ ~ hh:10 hh:11" # gain "0.75"
+
+master 0.05
+bpm 110
+
+--d6 $ s "bg:4" # gain "4"
+
+d1 $ s "bd"
+d2 $ s "tm"
+
+
+
+--d1 $ s "sn"
+--mute d1
+
+-- ---------------------------------------------------------------------------
+-- G) Include pitfalls (do not leave enabled; use to verify **errors**)
+--
+--   • `include "missing.seq"` → parse error on include line.
+--   • Mutual includes → "cycle" error (create two tiny files that include each other).
+--   • Running from a tool that does not set the `.seq` file path → `include` may
+--     error saying the file must be loaded from disk.
+
+-- Keep this on a separate orbit so it never overrides active d1 tests.

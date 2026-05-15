@@ -1,0 +1,19 @@
+# Rust build output
+/target/
+
+# Local debug / trace from running the CLI
+trace.jsonl
+
+# Vendored Tidal tree — not used by `cargo build`; clone upstream if you need it
+tidal-source/
+
+# Secrets
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# Sample one-shots (add locally; keeps repo small)
+samples/*.wav
+samples/*.WAV

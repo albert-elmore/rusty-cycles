@@ -1,0 +1,51 @@
+-- test2.seq
+-- 10 complex examples, one per track (d1..d10)
+-- Use ONE solo line at a time (snapshot model). Keep others commented.
+
+bpm 120
+master 0.12
+swing 0
+humanize_ms 0
+reload_quantum_cycles 1
+
+-- SOLO SELECTOR (uncomment exactly one)
+--solo d1
+-- solo d2
+-- solo d3
+-- solo d4
+-- solo d5
+-- solo d6
+-- solo d7
+-- solo d8
+-- solo d9
+ solo d10
+
+-- d1: Euclid + probability + gain/pan motion
+d1 $ s "euclid(5,16,1) bd" # prob "1 0.7 1 0.8 0.6" # gain "1 0.8 0.9 0.7" # pan "-0.3 0.3"
+
+-- d2: Reverse transform outside string + stacked accents
+d2 $ rev $ s "[sn hh:9] sn [sn hh:9] ~ sn hh:9" # gain "0.8 0.6 0.8 1"
+
+-- d3: Palindrome with mixed stack/sequence
+d3 $ pal $ s "bd [sn hh] tm hh:9" # gain "0.9 0.7 0.8 0.6" # pan "-0.5 0 0.5 0"
+
+-- d4: Rotate onset groups + alternating hats
+d4 $ rot 2 $ s "[hh hh:9] ~ [hh hh:9] sn tm" # pan "-0.8 0.8"
+
+-- d5: Every 3 cycles apply pal transform
+d5 $ every 3 pal $ s "bd sn hh:9 tm" # gain "1 0.7 0.5 0.8"
+
+-- d6: Fast outer combinator + short cut groups
+d6 $ fast 2 $ s "sn hh:9 bd ~" # cut "2 1 2 1" # cutoff "40 25 40 25" # gain "0.7 0.5"
+
+-- d7: Slow outer combinator + long legato sweeps
+d7 $ slow 2 $ s "tm hh:9 sn bd" # legato "1.2 0.9 1.1 0.8" # pan "-1 -0.3 0.3 1"
+
+-- d8: Dur overrides legato + probabilistic ghost notes
+d8 $ s "bd sn hh:9 sn tm hh:9" # prob "1 0.6 0.9 0.5 0.8 0.4" # dur "90 ~ 60 ~ 120 ~" # legato "1.5 1.5 1.5 1.5 1.5 1.5"
+
+-- d9: Dense euclidean hat layer with cuts and pan spread
+d9 $ s "euclid(11,16,0) hh:9" # gain "0.35 0.4 0.45 0.5" # pan "-1 -0.5 0 0.5 1" # cut "5 5 5 5" # cutoff "18 22 18 22"
+
+-- d10: Hybrid phrase using stack + alt + rests
+d10 $ s "stack [ bd ~ sn ~, <hh:9 tm> [sn hh:9] ]" # gain "0.8 0.6 0.9 0.7" # pan "-0.4 0.4"
