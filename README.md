@@ -1,4 +1,6 @@
-# Sequencer (MVP)
+# Rusty Cycles
+
+An interpretation of TidalCycles written in Rust plus more.
 
 Rust CLI that plays WAV one-shots on a **cycle** clock, with **live reload** when you save a pattern file. Each cycle it re-reads the file and reloads when the **contents** change (the OS watcher is an extra hint). Updates apply at the **start** of the next cycle; parse errors go to stderr and the last good pattern keeps playing.
 
@@ -6,7 +8,7 @@ Rust CLI that plays WAV one-shots on a **cycle** clock, with **live reload** whe
 
 Install Rust via [rustup](https://rustup.rs) (Apple Silicon uses `aarch64-apple-darwin` by default).
 
-Put short WAV clips in [`samples/`](samples/) — for example `kick.wav` and `snare.wav` — matching the paths in your pattern file. See [`samples/README.txt`](samples/README.txt).
+Put short WAV clips in [`samples/`](samples/) — for example `kick.wav` and `snare.wav` — matching the paths in your pattern file.
 
 **Hearing “wrong” hit times or tempo:** The scheduler fires where your `.seq` says (check stderr after each save: `hits=[…]` per track). If two tracks use `0` but one *sounds* late, the WAV often has **leading silence** or a **late transient** — trim the file or use tighter one-shots. Long loops or noisy tails can also mask BPM; use `--verbose` to compare expected cycle length in ms vs wall time and `drift_frames` after each cycle boundary.
 
